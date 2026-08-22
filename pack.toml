@@ -1,0 +1,13 @@
+name = "minecraft-creative-create-1"
+author = "mikepea"
+version = "0.1.0"
+pack-format = "packwiz:1.1.0"
+
+[index]
+file = "index.toml"
+hash-format = "sha256"
+hash = "6bd3922f28dedfa7db23795b0e39afa93c660585ef2c2a76b521f499c8dd0da4"
+
+[versions]
+minecraft = "1.21.1"
+neoforge = "21.1.248"

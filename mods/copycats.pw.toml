@@ -1,0 +1,13 @@
+name = "Create: Copycats+"
+filename = "copycats-3.0.7+mc.1.21.1-neoforge.jar"
+side = "both"
+
+[download]
+url = "https://cdn.modrinth.com/data/UT2M39wf/versions/8cABiKTp/copycats-3.0.7%2Bmc.1.21.1-neoforge.jar"
+hash-format = "sha512"
+hash = "72d3d28646a29b9de6e29fccac2591321198dd8ad1a82f290cb39ff4220114fd1d3059b5730be9875ef9c79b2e2179a2e7082dfcc5934e405bdf0a6b0f1cd015"
+
+[update]
+[update.modrinth]
+mod-id = "UT2M39wf"
+version = "8cABiKTp"

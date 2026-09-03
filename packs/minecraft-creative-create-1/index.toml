@@ -136,11 +136,6 @@ hash = "d1160b7fd4395d2b1140c78791a6d974a9c804d17078d643cbb8f4d267505066"
 metafile = true
 
 [[files]]
-file = "mods/create-slice-and-dice-growth-accelerator.pw.toml"
-hash = "058d6a0b690d7ada105c4267aeb01e1d31471598eb76ca66c98c25eedb3d9879"
-metafile = true
-
-[[files]]
 file = "mods/create-sound-of-steam.pw.toml"
 hash = "a7a87fc6ea98d8fbaa426258990f2dec714699e98fb8a083f9a399c90d02844f"
 metafile = true

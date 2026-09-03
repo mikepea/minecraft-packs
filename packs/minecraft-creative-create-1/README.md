@@ -24,16 +24,23 @@ add-ons actually support.
 
 ## Contents
 
-~59 mods: the full Create Aeronautics suite, Create Big Cannons, and a large set of Create
+~58 mods: the full Create Aeronautics suite, Create Big Cannons, and a large set of Create
 add-ons, plus their libraries (Architectury, Curios, GeckoLib, DragonLib, Moonlight, Iron's Lib,
 Mechanicals Lib, Sable, Player Animator, GlitchCore, Kotlin for Forge), Iron's Spells 'n
 Spellbooks, Farmer's Delight, Sophisticated Backpacks, and Xaero's World Map. `packwiz list`
 for the full set.
 
-Kotlin for Forge looks out of place in a Create pack and is easy to remove by mistake: it is a
-*language provider* that Create Slice & Dice 4.3.3 is written against. Without it Slice & Dice
-fails to load, and Create Slice and Dice: Growth Accelerator then fails too — which crashes the
-server outright, not just those two mods. `scripts/check-deps.py` catches this class of gap.
+Kotlin for Forge looks out of place in a Create pack and is easy to remove by mistake: Create
+Slice & Dice was **rewritten in Kotlin at 4.3.0**, so from that version on it loads through the
+`kotlinforforge` language provider rather than `javafml`. Without it Slice & Dice does not load
+at all, which crashes the server. `scripts/check-deps.py` catches this class of gap.
+
+That same rewrite is why **Create Slice & Dice: Crop Accelerator is not in the pack**. It links
+against `SprinkleBehaviour`, a class that existed in 4.2.4 and was removed when 4.3.0 rewrote
+the sprinkler package, so it dies with `NoClassDefFoundError` on any 4.3.x. It has had exactly
+one release (2026-05-30) and no update since. Modrinth metadata cannot catch this — the addon
+declares `sliceanddice 4.0 or above`, which 4.3.3 satisfies on paper. Re-adding it means pinning
+Slice & Dice back to 4.2.4 (and then Kotlin for Forge is unnecessary).
 
 ### Wanted but not (yet) included
 
@@ -47,7 +54,7 @@ Steam 'n' Rails.
 |---|---|---|
 | `both` | 56 | |
 | `client` | 1 | Xaero's World Map |
-| `server` | 2 | Create: Liquid Fuel, Create Slice and Dice: Growth Accelerator |
+| `server` | 1 | Create: Liquid Fuel |
 
 Set `side = "client"` on anything purely cosmetic, map-related, or UI-related as it gets added —
 otherwise the default `both` puts it on the server, where it is dead weight at best and a crash

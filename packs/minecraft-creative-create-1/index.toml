@@ -66,6 +66,16 @@ hash = "61afa588fd3156a29418aef463c527308b014e72d86b5ca7c03f2f28973ca27a"
 metafile = true
 
 [[files]]
+file = "mods/create-deco.pw.toml"
+hash = "67a405e6307f900d168deaa954a4309c3b44a6025e4efd7b8e774b6f9d3a69cd"
+metafile = true
+
+[[files]]
+file = "mods/create-deep-seas.pw.toml"
+hash = "404db1758af44123b89cbf6e2ffdf4a5cf11b708be665f48657ff40735723152"
+metafile = true
+
+[[files]]
 file = "mods/create-design-n-decor.pw.toml"
 hash = "e05bc0c3ee97da0dfcf9dabd3c3eaee0e90819091ead3f500ddc3b1caf77fe54"
 metafile = true
@@ -106,8 +116,23 @@ hash = "2af9229718d9edb1eaa4b88fac0063ab2f5f7ba7650a4efa5f0a8e6ce25549cd"
 metafile = true
 
 [[files]]
+file = "mods/create-mechanical-chicken.pw.toml"
+hash = "bc5c6f8ea0e3a739da6977506ebeece414c737066660134d3c2469be94677618"
+metafile = true
+
+[[files]]
 file = "mods/create-mobile-packages.pw.toml"
 hash = "3956311952e50e1b437d8e7c5af4537feebd3d95bd5435192b78b251cab38bf2"
+metafile = true
+
+[[files]]
+file = "mods/create-nuclear-radiation.pw.toml"
+hash = "a12f01e13d2c4bb951fc1cfac9109e0462ff469371363e22f8405da3cae6364c"
+metafile = true
+
+[[files]]
+file = "mods/create-numismatics-advancement-seeker.pw.toml"
+hash = "ebaa65a3795513dee2ed09c14dce1c33230e9ad86368c5c922be9beb659fb92d"
 metafile = true
 
 [[files]]
@@ -156,13 +181,28 @@ hash = "2244c6c580c41f432e02bc82a6f78af0b1777de42400d1e5b702208376c56c6f"
 metafile = true
 
 [[files]]
+file = "mods/create-tracks+.pw.toml"
+hash = "a0d5bedb0dcfa59ec7ae99c5449027e52bf1033180e23887b848ca4b0340d96d"
+metafile = true
+
+[[files]]
 file = "mods/create-train-parts.pw.toml"
 hash = "09cb6e7676473c7394811162cb35684b11db4b1eb6d680fd7d9956c668f24864"
 metafile = true
 
 [[files]]
+file = "mods/create-wizardry.pw.toml"
+hash = "bdb6c25c98df4589ba769980d10e0386ca898fb115756057dd6725ff45e12830"
+metafile = true
+
+[[files]]
 file = "mods/create.pw.toml"
 hash = "dcaf5f2e28db0b9a127d0167456832341045ddc9aec058c3d9fcf53f618d2404"
+metafile = true
+
+[[files]]
+file = "mods/createnuclear.pw.toml"
+hash = "e7a6cda82ddd91e08e2fbadff97d4590861f0ca78d9fa12a8693de25f48a58ac"
 metafile = true
 
 [[files]]
@@ -233,6 +273,16 @@ metafile = true
 [[files]]
 file = "mods/ntgl.pw.toml"
 hash = "7932fbacc370edc6fd2577784800fd3d8baf7ceffa7d8ef0ac927ec13a62f16a"
+metafile = true
+
+[[files]]
+file = "mods/numismatics-villager-currency.pw.toml"
+hash = "76fa1a82e8694944a3c55f57d0f31b1131e1548591a5615dbc681551f8cd82a2"
+metafile = true
+
+[[files]]
+file = "mods/numismatics.pw.toml"
+hash = "840eb517a83c586b9f543ab9781d4c8529b6fedf2d679f411577c7a583e50fe5"
 metafile = true
 
 [[files]]

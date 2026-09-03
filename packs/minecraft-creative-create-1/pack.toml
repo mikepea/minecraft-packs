@@ -1,12 +1,12 @@
 name = "minecraft-creative-create-1"
 author = "mikepea"
-version = "0.1.4"
+version = "0.2.0"
 pack-format = "packwiz:1.1.0"
 
 [index]
 file = "index.toml"
 hash-format = "sha256"
-hash = "9b7ae2c8466147255d425378e00f5c74ecd9d2a36617736b8c5cbc0e1e5ce91d"
+hash = "a9c23a9dc7a85038b7b8d88ef8bea6e15973b87cbe95472b5eb8bc301e686036"
 
 [versions]
 minecraft = "1.21.1"

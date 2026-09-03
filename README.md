@@ -25,7 +25,7 @@ server restart) picks the change up on its own.
 
 | Pack | Minecraft | Loader | Mods |
 |---|---|---|---|
-| [`minecraft-creative-create-1`](packs/minecraft-creative-create-1/) | 1.21.1 | NeoForge 21.1.248 | 58 |
+| [`minecraft-creative-create-1`](packs/minecraft-creative-create-1/) | 1.21.1 | NeoForge 21.1.248 | 59 |
 
 ## Consuming a pack
 
@@ -80,6 +80,21 @@ packwiz update --all                # bump all mods to newest compatible
 packwiz refresh                     # recompute index.toml after manual edits
 packwiz serve                       # serve this pack on localhost:8080 to test before pushing
 ```
+
+### After adding or updating mods
+
+```bash
+python3 scripts/check-deps.py     # or: scripts/check-deps.py packs/<one-pack>
+```
+
+`packwiz modrinth add` offers to pull a mod's dependencies in, but the offer is easy to decline
+or miss, and nothing afterwards re-checks. This asks Modrinth what each *pinned version*
+actually requires and diffs it against the pack.
+
+The failure it prevents is deferred and disproportionate: the pack publishes, hashes verify,
+clients sync — and then the server dies at mod-loading time, taking down every mod that depended
+on the one that could not load. It is network-dependent, so it deliberately isn't part of the
+publish path; an upstream API blip should never block a deploy.
 
 ### Publishing
 

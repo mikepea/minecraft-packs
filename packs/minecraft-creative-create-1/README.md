@@ -24,10 +24,16 @@ add-ons actually support.
 
 ## Contents
 
-~58 mods: the full Create Aeronautics suite, Create Big Cannons, and a large set of Create
+~59 mods: the full Create Aeronautics suite, Create Big Cannons, and a large set of Create
 add-ons, plus their libraries (Architectury, Curios, GeckoLib, DragonLib, Moonlight, Iron's Lib,
-Mechanicals Lib, Sable, Player Animator, GlitchCore), Iron's Spells 'n Spellbooks, Farmer's
-Delight, Sophisticated Backpacks, and Xaero's World Map. `packwiz list` for the full set.
+Mechanicals Lib, Sable, Player Animator, GlitchCore, Kotlin for Forge), Iron's Spells 'n
+Spellbooks, Farmer's Delight, Sophisticated Backpacks, and Xaero's World Map. `packwiz list`
+for the full set.
+
+Kotlin for Forge looks out of place in a Create pack and is easy to remove by mistake: it is a
+*language provider* that Create Slice & Dice 4.3.3 is written against. Without it Slice & Dice
+fails to load, and Create Slice and Dice: Growth Accelerator then fails too — which crashes the
+server outright, not just those two mods. `scripts/check-deps.py` catches this class of gap.
 
 ### Wanted but not (yet) included
 
@@ -39,7 +45,7 @@ Steam 'n' Rails.
 
 | `side` | Count | |
 |---|---|---|
-| `both` | 55 | |
+| `both` | 56 | |
 | `client` | 1 | Xaero's World Map |
 | `server` | 2 | Create: Liquid Fuel, Create Slice and Dice: Growth Accelerator |
 

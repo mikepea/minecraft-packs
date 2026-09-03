@@ -24,7 +24,7 @@ add-ons actually support.
 
 ## Contents
 
-~58 mods: the full Create Aeronautics suite, Create Big Cannons, and a large set of Create
+~57 mods: the full Create Aeronautics suite, Create Big Cannons, and a large set of Create
 add-ons, plus their libraries (Architectury, Curios, GeckoLib, DragonLib, Moonlight, Iron's Lib,
 Mechanicals Lib, Sable, Player Animator, GlitchCore, Kotlin for Forge), Iron's Spells 'n
 Spellbooks, Farmer's Delight, Sophisticated Backpacks, and Xaero's World Map. `packwiz list`
@@ -48,11 +48,20 @@ Not available on Modrinth for 1.21.1/NeoForge — candidates for a CurseForge so
 CBC Advanced Technology, Create Confectionery, Create Fluid Logistics, Create Bells and Whistles,
 Steam 'n' Rails.
 
+### Removed: broken on a dedicated server
+
+**Create: Linear Bearing** — do not re-add without testing on the server. Its `@Mod` class
+constructor calls `LinearBearingClient.registerClient(...)` unconditionally, with no
+`FMLEnvironment`/`DistExecutor` dist guard, so a dedicated server crashes resolving client
+render classes (`NoClassDefFoundError` on `BakedModel`) before the mod initialises. Checked
+every 1.21.1/NeoForge build from 1.2.5 to 1.3.5 — all have the same unguarded call, so there is
+no version to downgrade to. Modrinth lists it as `server: required`, which is simply wrong.
+
 ### Sides
 
 | `side` | Count | |
 |---|---|---|
-| `both` | 56 | |
+| `both` | 55 | |
 | `client` | 1 | Xaero's World Map |
 | `server` | 1 | Create: Liquid Fuel |
 

@@ -25,7 +25,7 @@ server restart) picks the change up on its own.
 
 | Pack | Minecraft | Loader | Mods |
 |---|---|---|---|
-| [`minecraft-creative-create-1`](packs/minecraft-creative-create-1/) | 1.21.1 | NeoForge 21.1.248 | 58 |
+| [`minecraft-creative-create-1`](packs/minecraft-creative-create-1/) | 1.21.1 | NeoForge 21.1.248 | 57 |
 
 ## Consuming a pack
 

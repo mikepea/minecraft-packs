@@ -37,7 +37,12 @@ Steam 'n' Rails.
 
 ### Sides
 
-56 mods are `side = "both"` and 2 are `side = "server"`; nothing is marked `client`. Xaero's
-World Map is a client-side mod currently declared `both`, so the server installs it needlessly —
-worth changing to `side = "client"` (then `packwiz refresh`) along with any other client-only
-additions.
+| `side` | Count | |
+|---|---|---|
+| `both` | 55 | |
+| `client` | 1 | Xaero's World Map |
+| `server` | 2 | Create: Liquid Fuel, Create Slice and Dice: Growth Accelerator |
+
+Set `side = "client"` on anything purely cosmetic, map-related, or UI-related as it gets added —
+otherwise the default `both` puts it on the server, where it is dead weight at best and a crash
+at worst.

@@ -1,56 +1,118 @@
-# minecraft-creative-create-1 modpack
+# minecraft-packs
 
-[packwiz](https://packwiz.infra.link/) source for the **NeoForge** Create-focused modpack that
-runs on the `minecraft-creative-create-1` server in the
-[talos-homelab](https://github.com/mikepea/talos-homelab) cluster
-(`apps/base/minecraft-creative-create-1/`). The exported `.mrpack` is published to Modrinth; the
-`itzg/minecraft-server` container installs it on boot via `TYPE=MODRINTH` + `MODRINTH_MODPACK`.
+Self-hosted [packwiz](https://packwiz.infra.link/) modpack definitions, published as a static
+site on GitHub Pages:
 
-## Versions
+**<https://mikepea.github.io/minecraft-packs/>**
 
-| | |
-|---|---|
-| Minecraft | **1.21.1** |
-| Loader | **NeoForge 21.1.248** |
-| Java | **21** (server image `itzg/minecraft-server:java21`) |
+One repo, many packs. Each directory under `packs/` is served at
+`https://mikepea.github.io/minecraft-packs/<pack-name>/pack.toml`, which is the only URL a
+client or server ever needs.
 
-**Why 1.21.1 and not the latest?** The Create mod's newest NeoForge build tops out at MC 1.21.1
-(`create 6.0.10+mc1.21.1`) — it has no 26.2 build. The whole pack is pinned to what Create + its
-add-ons actually support.
+## Why this exists
 
-## Contents
+packwiz's `.toml` files *are* a distribution format. `packwiz-installer` (Prism Launcher) and
+`itzg/docker-minecraft-server` (`PACKWIZ_URL`) both read them straight off any plain HTTP host,
+so publishing a pack needs no Modrinth or CurseForge project — and no waiting on a review queue.
+The mod **jars** are still fetched from their upstream CDNs; what we host is the ~25 KB of
+metadata that pins exact versions and hashes.
 
-~58 mods: the full Create Aeronautics suite, Create Big Cannons, and a large set of Create
-add-ons, plus their libraries (Architectury, Curios, GeckoLib, DragonLib, Moonlight, Iron's Lib,
-Mechanicals Lib, Sable, Player Animator, GlitchCore), Iron's Spells 'n Spellbooks, Farmer's
-Delight, Sophisticated Backpacks, and Xaero's World Map. `packwiz list` for the full set.
+The other win is auto-update. A `.mrpack` is a snapshot you re-upload and re-point at on every
+change; a packwiz URL is a live pointer. Push to `main` and the next client launch (and the next
+server restart) picks the change up on its own.
 
-### Wanted but not (yet) included
+## Packs
 
-Not available on Modrinth for 1.21.1/NeoForge — candidates for a CurseForge source later:
-CBC Advanced Technology, Create Confectionery, Create Fluid Logistics, Create Bells and Whistles,
-Steam 'n' Rails.
+| Pack | Minecraft | Loader | Mods |
+|---|---|---|---|
+| [`minecraft-creative-create-1`](packs/minecraft-creative-create-1/) | 1.21.1 | NeoForge 21.1.248 | 58 |
 
-## Working with the pack
+## Consuming a pack
+
+### Server — itzg/docker-minecraft-server
+
+packwiz installs mods but **not** the loader, so `TYPE` / `VERSION` are still needed alongside it:
+
+```yaml
+TYPE: "NEOFORGE"
+VERSION: "1.21.1"
+NEOFORGE_VERSION: "21.1.248"
+PACKWIZ_URL: "https://mikepea.github.io/minecraft-packs/minecraft-creative-create-1/pack.toml"
+```
+
+The image re-syncs on every container start, so deploying a pack update is a
+`kubectl rollout restart` — no manifest edit. Only mods marked `side = "server"` or `"both"` are
+installed.
+
+### Client — Prism Launcher
+
+1. Create an instance with the matching Minecraft version and loader.
+2. Download [`packwiz-installer-bootstrap.jar`](https://github.com/packwiz/packwiz-installer-bootstrap/releases/latest)
+   into the instance's `.minecraft` folder (**Edit Instance → Folder** opens it).
+3. **Edit Instance → Settings → Custom commands**, tick *Custom commands*, and set the
+   **Pre-launch command** to:
+
+   ```
+   "$INST_JAVA" -jar "$INST_MC_DIR/packwiz-installer-bootstrap.jar" -g -s client --pack-folder "$INST_MC_DIR" --bootstrap-main-jar "$INST_MC_DIR/packwiz-installer.jar" https://mikepea.github.io/minecraft-packs/minecraft-creative-create-1/pack.toml
+   ```
+
+   The absolute `$INST_MC_DIR` paths matter: Prism runs custom commands in the *launcher's*
+   working directory, not the instance's, so the bare `-jar packwiz-installer-bootstrap.jar`
+   form found in most tutorials will not find the jar. `--pack-folder` then keeps the mods
+   landing in `.minecraft` rather than wherever Prism happened to be started from.
+
+Every launch now syncs the instance to the pack before Minecraft starts. To hand the instance to
+someone else, use **Export Instance** — the pre-launch command travels in the zip, so they import
+it once and never touch packwiz.
+
+## Working on a pack
+
+All `packwiz` commands run **inside the pack directory**:
 
 ```bash
+cd packs/minecraft-creative-create-1
+
 packwiz list                        # list mods
 packwiz modrinth add <slug|url>     # add a Modrinth mod (resolves deps)
 packwiz curseforge add <slug|url>   # add a CurseForge mod
 packwiz remove <name>               # remove a mod
 packwiz update --all                # bump all mods to newest compatible
 packwiz refresh                     # recompute index.toml after manual edits
-packwiz modrinth export             # -> minecraft-creative-create-1-<version>.mrpack (gitignored)
+packwiz serve                       # serve this pack on localhost:8080 to test before pushing
 ```
 
-## Publish / deploy loop
+### Publishing
 
-1. Edit mods (add/remove/update) → `packwiz refresh`.
-2. Bump `version` in `pack.toml`, commit.
-3. `packwiz modrinth export` → new `.mrpack`.
-4. Upload the `.mrpack` as a new version to the Modrinth modpack project (visibility: unlisted).
-5. Set `MODRINTH_MODPACK` in the server's `deployment.yaml` to that version's URL, then
-   `kubectl -n minecraft rollout restart deploy/minecraft-creative-create-1` (itzg reinstalls
-   the pack on boot).
+1. Change mods, then `packwiz refresh`.
+2. Bump `version` in the pack's `pack.toml`.
+3. Commit and push to `main`.
 
-The `.mrpack` is a build artifact (gitignored) — the TOML files here are the source of truth.
+That's it — the [Publish packs](.github/workflows/pages.yml) workflow rebuilds and deploys the
+site. Clients pick the change up on their next launch; servers on their next restart.
+
+`scripts/build-site.py` re-checks every hash in `pack.toml` and `index.toml` before publishing
+and fails the build on a mismatch, so a pack where someone forgot to run `packwiz refresh` never
+reaches a client. Run it locally to check your work:
+
+```bash
+python3 scripts/build-site.py --base-url https://mikepea.github.io/minecraft-packs
+```
+
+Pull requests run that same build without deploying.
+
+### Adding a new pack
+
+```bash
+mkdir -p packs/<new-pack> && cd packs/<new-pack>
+packwiz init          # answer the prompts; the pack name should match the directory
+```
+
+Push it. The workflow discovers any `packs/*/pack.toml` automatically — no config to update —
+and the new pack appears on the site with its own URL and ready-made itzg and Prism snippets.
+
+### Sides
+
+`side` in each `mods/*.pw.toml` decides who gets the mod: `both` (default), `client`, or
+`server`. Client-only mods left as `both` get installed on the server too, where at best they
+are dead weight and at worst they crash it. Worth setting explicitly for anything cosmetic,
+map-related, or UI-related.

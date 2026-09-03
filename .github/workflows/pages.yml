@@ -1,0 +1,60 @@
+name: Publish packs
+
+# The packwiz TOML files ARE the distribution format: packwiz-installer (Prism)
+# and itzg/docker-minecraft-server (PACKWIZ_URL) both consume them straight off
+# a plain HTTP host. So publishing a pack is just serving packs/<name>/ at a
+# stable URL -- no Modrinth or CurseForge project involved.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "packs/**"
+      - "scripts/build-site.py"
+      - ".github/workflows/pages.yml"
+  pull_request:
+    paths:
+      - "packs/**"
+      - "scripts/build-site.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Never race two deploys; let an in-flight one finish so a half-written pack is
+# never what a client pulls mid-launch.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: pages
+        uses: actions/configure-pages@v5
+
+      - name: Build site
+        run: |
+          python3 scripts/build-site.py \
+            --base-url "${{ steps.pages.outputs.base_url }}" \
+            --out _site
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  # Pull requests build (and hash-verify) but do not publish.
+  deploy:
+    if: github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,4 @@
+# `packwiz refresh` indexes every non-metadata file in the pack directory and
+# clients then download it into .minecraft/. Docs are for this repo, not for
+# players' game folders.
+README.md
